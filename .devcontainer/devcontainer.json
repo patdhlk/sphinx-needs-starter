@@ -27,9 +27,14 @@
         "vscode": {
             "extensions": [
                 "useblocks.ubcode",
+                "ms-python.python",
                 "swyddfa.esbonio",
                 "tamasfe.even-better-toml",
-                "trond-snekvik.simple-rst"
+                "trond-snekvik.simple-rst",
+                // Diagram authoring (the build-time toolchain is in the Dockerfile):
+                "jebbs.plantuml",
+                "joaompinto.vscode-graphviz",
+                "vstirbu.vscode-mermaid-preview"
             ],
             "settings": {
                 // Point VS Code (and esbonio) at the uv-managed virtualenv.
@@ -38,7 +43,11 @@
                 // esbonio language server: use the project's Python and tell it
                 // where the Sphinx conf.py lives (top-level source/).
                 "esbonio.sphinx.pythonCommand": ["${workspaceFolder}/.venv/bin/python"],
-                "esbonio.sphinx.confDir": "${workspaceFolder}/source"
+                "esbonio.sphinx.confDir": "${workspaceFolder}/source",
+
+                // Render PlantUML locally using the container's plantuml + JRE
+                // (no external PlantUML server needed for live preview).
+                "plantuml.render": "Local"
             }
         }
     }

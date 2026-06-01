@@ -20,6 +20,10 @@ release = "0.1.0"                       # ← customize: your project's version
 extensions = [
     "sphinx_needs",
     "ubt_sphinx",
+    # Diagrams (rendered during the build):
+    "sphinx.ext.graphviz",      # .. graphviz:: / .. digraph::  (needs `dot`)
+    "sphinxcontrib.plantuml",   # .. uml::                      (needs `plantuml` + Java)
+    "sphinxcontrib.mermaid",    # .. mermaid::                  (rendered client-side for HTML)
 ]
 
 # -- HTML output -------------------------------------------------------------
@@ -45,6 +49,22 @@ html_theme = "furo"
 # To add or change need types, edit `ubproject.toml`, not this file.
 # Docs: https://sphinx-needs.readthedocs.io
 needs_from_toml = "../ubproject.toml"
+
+# -- Diagram configuration ---------------------------------------------------
+
+# Graphviz: render to SVG (crisp, scalable) instead of the default PNG.
+graphviz_output_format = "svg"
+
+# PlantUML: invoked via the `plantuml` command on PATH. The dev container
+# installs it (with Java); on a bare host install PlantUML + a JRE yourself.
+# To use a JAR directly instead, set e.g.:
+#   plantuml = "java -jar /path/to/plantuml.jar"
+plantuml = "plantuml"
+plantuml_output_format = "svg"
+
+# Mermaid renders client-side in the browser for the HTML build, so no extra
+# binary is required. For static image export (e.g. PDF) install mermaid-cli
+# (`mmdc`) and set `mermaid_output_format`.
 
 # -- ubtrace builder configuration -------------------------------------------
 

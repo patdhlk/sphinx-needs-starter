@@ -1,5 +1,15 @@
 FROM mcr.microsoft.com/devcontainers/python:3.12-bookworm
 
+# Diagram toolchain used during the Sphinx build:
+#   - graphviz provides `dot` (sphinx.ext.graphviz, and PlantUML's layout engine)
+#   - plantuml provides the `plantuml` wrapper and pulls in a headless JRE
+# (Mermaid renders client-side in the browser, so it needs no system package.)
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        graphviz \
+        plantuml \
+    && rm -rf /var/lib/apt/lists/*
+
 # Bring in uv/uvx from Astral's first-party distroless image (no third-party
 # devcontainer Feature). Pinned for reproducibility.
 COPY --from=ghcr.io/astral-sh/uv:0.8.19 /uv /uvx /bin/

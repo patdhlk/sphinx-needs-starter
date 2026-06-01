@@ -24,6 +24,7 @@ the moment you open it.
 | **HTML builder** | `make html` → browsable docs. |
 | **ubTrace builder** | `make ubtrace` → structured output for [ubTrace](https://ubtrace.useblocks.com/). |
 | **`ubproject.toml`** | Single source of truth for need types, shared by `ubc` (lint) and the Sphinx build. |
+| **Diagrams** | Graphviz, PlantUML, and Mermaid render during the build — toolchain preinstalled in the dev container. See `source/diagrams.rst`. |
 
 ---
 
@@ -60,6 +61,10 @@ uv sync                          # create .venv with the toolchain
 ./.devcontainer/install-ubc.sh   # optional: install the ubc CLI on your host
 make html                        # build the HTML docs
 ```
+
+> **Diagrams on a bare host:** Graphviz and PlantUML render at build time, so
+> install `graphviz` (the `dot` binary) and `plantuml` (needs Java) on your
+> host. The dev container already includes both. Mermaid needs nothing extra.
 
 ---
 

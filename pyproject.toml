@@ -20,6 +20,10 @@ dependencies = [
     "ubt_sphinx",
     "sphinx-autobuild",
     "sphinx>=7,<9",
+    # Diagram support. Graphviz is built into Sphinx (sphinx.ext.graphviz) and
+    # only needs the `dot` binary; PlantUML and Mermaid need these extensions.
+    "sphinxcontrib-plantuml",
+    "sphinxcontrib-mermaid",
 ]
 
 [tool.uv]
