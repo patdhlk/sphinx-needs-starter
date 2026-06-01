@@ -142,4 +142,4 @@ Ready-made **VS Code tasks** are in `.vscode/tasks.json` (run them via
 
 ## License
 
-[MIT](LICENSE) © 2026 uptux
+[MIT](LICENSE) © 2026 Patrick Dahlke
