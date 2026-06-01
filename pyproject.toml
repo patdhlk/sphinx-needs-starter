@@ -1,0 +1,34 @@
+# This is a NON-package documentation environment, not a distributable Python
+# package. There is nothing to build or install from this project itself; it
+# simply pins the Sphinx + sphinx-needs toolchain used to build the docs.
+#
+# Customers / contributors set up the environment with:
+#
+#     uv sync
+#
+# which creates a local .venv with the dependencies below. The docs sources
+# live in source/ and build to build/<builder>.
+
+[project]
+name = "sphinx-needs-starter"
+version = "0.1.0"
+description = "Starter template for documentation built with Sphinx and sphinx-needs."
+requires-python = ">=3.12"
+dependencies = [
+    "sphinx-needs>=8,<9",
+    "furo",
+    "ubt_sphinx",
+    "sphinx-autobuild",
+    "sphinx>=7,<9",
+]
+
+[tool.uv]
+# Non-package project: do not attempt to build/install this directory itself.
+package = false
+
+# ubt_sphinx (the ubtrace builder) is published on the useblocks index, not on
+# public PyPI. A plain (non-explicit) index falls through to PyPI for every
+# other dependency, so no [tool.uv.sources] pinning is required.
+[[tool.uv.index]]
+name = "useblocks"
+url = "https://pypi.useblocks.com/"

@@ -1,0 +1,17 @@
+# ubproject.toml — single source of truth shared by `ubc` (lint) and the Sphinx build.
+"$schema" = "https://ubcode.useblocks.com/ubproject.schema.json"
+
+[project]
+name = "Sphinx-Needs Starter"
+description = "Requirements management with Sphinx-Needs"
+srcdir = "source"
+
+[needs]
+# Sphinx-Needs options, with the `needs_` prefix dropped.
+# This is the single source of truth shared by `ubc` (lint) and the Sphinx build.
+id_required = true
+types = [
+    { directive = "req",  title = "Requirement",   prefix = "R_", color = "#BFD8D2", style = "node" },
+    { directive = "spec", title = "Specification", prefix = "S_", color = "#FEDCD2", style = "node" },
+    { directive = "test", title = "Test Case",     prefix = "T_", color = "#DF744A", style = "node" },
+]

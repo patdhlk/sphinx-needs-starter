@@ -1,0 +1,23 @@
+# Sphinx build output
+build/
+source/_build/
+
+# Python / uv
+.venv/
+__pycache__/
+*.py[cod]
+.Python
+
+# Environments / tooling caches
+.cache/
+.mypy_cache/
+.ruff_cache/
+
+# ubTrace / ubCode local output
+.ubc/
+*.ubt
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp

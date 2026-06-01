@@ -1,0 +1,45 @@
+// Dev container for the Sphinx-Needs starter template.
+// Builds the local Dockerfile (Python 3.12 + uv + the ubc CLI), then runs
+// `uv sync` to materialize the .venv from pyproject.toml / uv.lock.
+{
+    "name": "Sphinx-Needs Starter",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "UBC_VERSION": "0.29.3"
+        }
+    },
+
+    // Create the local .venv with the documentation toolchain.
+    "postCreateCommand": "uv sync",
+
+    "remoteUser": "vscode",
+
+    // sphinx-autobuild serves a live HTML preview on port 8000.
+    "forwardPorts": [8000],
+    "portsAttributes": {
+        "8000": {
+            "label": "Sphinx live preview"
+        }
+    },
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "useblocks.ubcode",
+                "swyddfa.esbonio",
+                "tamasfe.even-better-toml",
+                "trond-snekvik.simple-rst"
+            ],
+            "settings": {
+                // Point VS Code (and esbonio) at the uv-managed virtualenv.
+                "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+
+                // esbonio language server: use the project's Python and tell it
+                // where the Sphinx conf.py lives (top-level source/).
+                "esbonio.sphinx.pythonCommand": ["${workspaceFolder}/.venv/bin/python"],
+                "esbonio.sphinx.confDir": "${workspaceFolder}/source"
+            }
+        }
+    }
+}
