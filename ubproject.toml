@@ -6,6 +6,13 @@ name = "Sphinx-Needs Starter"
 description = "Requirements management with Sphinx-Needs"
 srcdir = "source"
 
+[parse]
+# Directives that Sphinx extensions handle but ubc's parser doesn't know about.
+# PlantUML's `.. uml::` (from sphinxcontrib-plantuml) is rendered by Sphinx, so
+# tell ubc to ignore it instead of flagging it as an unknown directive.
+# (Graphviz, Mermaid, and Sphinx-Needs directives are already recognized.)
+ignore_directives = ["uml"]
+
 [needs]
 # Sphinx-Needs options, with the `needs_` prefix dropped.
 # This is the single source of truth shared by `ubc` (lint) and the Sphinx build.

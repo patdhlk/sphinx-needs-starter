@@ -111,19 +111,32 @@ Three files hold the values you'll want to make your own:
 All targets run through `uv run`, so they use the pinned toolchain whether or
 not the venv is activated.
 
-### Linting with `ubc`
+### `ubc` and VS Code tasks
 
-The dev container ships the `ubc` CLI, which validates your needs against
-`ubproject.toml`:
+The dev container ships the `ubc` CLI, which works against `ubproject.toml`.
+Ready-made **VS Code tasks** are in `.vscode/tasks.json` (run them via
+*Terminal → Run Task…*):
 
-```bash
-ubc
-```
+| Task | Command | License? |
+| --- | --- | --- |
+| `ubc: build needs.json` | `ubc build needs . --outpath build/needs.json` | not required |
+| `ubc: validate needs.json` | `ubc build validate-json build/needs.json` | not required |
+| `ubc: index (report warnings)` | `ubc build index --show-warnings` | not required |
+| `ubc: check current file` | `ubc check <file>` | **required** |
+| `ubc: check project` | `ubc check source` | **required** |
+| `ubc: schema validate` | `ubc schema validate` | **required** |
+| `docs: build html` / `ubtrace` / `serve` / `clean` | `make …` | — |
 
-> **Note:** `ubc` is free for local development and open source. Running `ubc`
-> in CI/CD requires a useblocks *systems license* — see the
-> [ubCode docs](https://ubcode.useblocks.com/). This template deliberately does
-> not run `ubc` in CI.
+> **Licensing.** The `build` commands (needs export, indexing, JSON validation)
+> run with no license. `ubc check` and `ubc schema validate` require a ubCode
+> license — **free for open source**, but the project must be recognized as an
+> open-source repo (public, OSI license) or you must configure a license key.
+> See the [ubCode docs](https://ubcode.useblocks.com/). Running `ubc` in CI/CD
+> needs a *systems license*; this template does not run `ubc` in CI.
+
+> **Note on diagrams:** `ubproject.toml` lists PlantUML's `uml` directive under
+> `parse.ignore_directives` so `ubc` doesn't flag it as unknown (Sphinx renders
+> it). Graphviz, Mermaid, and Sphinx-Needs directives are recognized natively.
 
 ---
 

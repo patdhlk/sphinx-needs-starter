@@ -1,0 +1,113 @@
+{
+    // VS Code tasks for the Sphinx-Needs starter.
+    //
+    // The `ubc:` tasks call the ubCode CLI (a standalone binary installed in the
+    // dev container). They operate on the project root, where `ubproject.toml`
+    // lives. The `docs:` tasks wrap the Makefile (which runs Sphinx via uv).
+    //
+    // Run any of these via: Terminal → Run Task…  (or Ctrl/Cmd+Shift+B for the
+    // default build task).
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "ubc: check current file",
+            "detail": "Lint the file currently open in the editor.",
+            "type": "shell",
+            "command": "ubc",
+            "args": ["check", "${file}"],
+            "group": "test",
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+        },
+        {
+            "label": "ubc: check project",
+            "detail": "Lint all documents under source/.",
+            "type": "shell",
+            "command": "ubc",
+            "args": ["check", "source"],
+            "group": "test",
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+        },
+        {
+            "label": "ubc: schema validate",
+            "detail": "Validate needs against the ontology schema (ubproject.toml).",
+            "type": "shell",
+            "command": "ubc",
+            "args": ["schema", "validate", "--show-warnings"],
+            "group": "test",
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+        },
+        {
+            "label": "ubc: index (report warnings)",
+            "detail": "Index the project and fail on build warnings.",
+            "type": "shell",
+            "command": "ubc",
+            "args": ["build", "index", "--show-warnings"],
+            "group": "test",
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+        },
+        {
+            "label": "ubc: build needs.json",
+            "detail": "Export the needs index to build/needs.json.",
+            "type": "shell",
+            "command": "mkdir -p build && ubc build needs . --outpath build/needs.json",
+            "group": "build",
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+        },
+        {
+            "label": "ubc: validate needs.json",
+            "detail": "Validate the exported build/needs.json file.",
+            "type": "shell",
+            "command": "ubc",
+            "args": ["build", "validate-json", "build/needs.json"],
+            "group": "test",
+            "problemMatcher": [],
+            "dependsOn": ["ubc: build needs.json"],
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+        },
+        {
+            "label": "docs: build html",
+            "detail": "Build the HTML docs (make html).",
+            "type": "shell",
+            "command": "make",
+            "args": ["html"],
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+        },
+        {
+            "label": "docs: build ubtrace",
+            "detail": "Build the ubtrace output (make ubtrace).",
+            "type": "shell",
+            "command": "make",
+            "args": ["ubtrace"],
+            "group": "build",
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+        },
+        {
+            "label": "docs: serve (live preview)",
+            "detail": "Live-reloading HTML preview on http://localhost:8000 (make serve).",
+            "type": "shell",
+            "command": "make",
+            "args": ["serve"],
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+        },
+        {
+            "label": "docs: clean",
+            "detail": "Remove the build/ directory (make clean).",
+            "type": "shell",
+            "command": "make",
+            "args": ["clean"],
+            "group": "build",
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "panel": "shared", "clear": true }
+        }
+    ]
+}
