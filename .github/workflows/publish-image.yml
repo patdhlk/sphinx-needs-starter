@@ -16,6 +16,12 @@ permissions:
   contents: read
   packages: write
 
+# GitHub forces JS actions onto Node.js 24 from 2026-06-16. Opt in early so the
+# Node 20 deprecation warning is gone and the actions are exercised on Node 24.
+# Harmless to keep once Node 24 is the default.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 concurrency:
   group: publish-image-${{ github.ref }}
   cancel-in-progress: false
@@ -25,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # QEMU lets us build the linux/arm64 layer on an amd64 runner.
       - name: Set up QEMU
