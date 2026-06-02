@@ -1,14 +1,17 @@
 // Dev container for the Sphinx-Needs starter template.
-// Builds the local Dockerfile (Python 3.12 + uv + the ubc CLI), then runs
-// `uv sync` to materialize the .venv from pyproject.toml / uv.lock.
+// Pulls the prebuilt base image (Python 3.12 + uv + graphviz/plantuml/Java),
+// fetches the ubc CLI on create, then runs `uv sync` to materialize the .venv
+// from pyproject.toml / uv.lock.
+//
+// Prefer a fast pull over a local build. To customize the image instead,
+// replace "image" with a "build" block pointing at the local Dockerfile.
 {
     "name": "Sphinx-Needs Starter",
-    "build": {
-        "dockerfile": "Dockerfile",
-        "args": {
-            "UBC_VERSION": "0.29.3"
-        }
-    },
+    "image": "ghcr.io/patdhlk/sphinx-needs-starter:latest",
+
+    // ubc is useblocks' proprietary binary and is not redistributed in the
+    // image; fetch it on create (needs root, hence sudo).
+    "onCreateCommand": "sudo bash .devcontainer/install-ubc.sh",
 
     // Create the local .venv with the documentation toolchain.
     "postCreateCommand": "uv sync",

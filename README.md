@@ -18,7 +18,7 @@ the moment you open it.
 | Piece | What it does |
 | --- | --- |
 | **uv** | Pins and installs the Sphinx toolchain (`uv sync`). Non-package project — there's nothing to build but the docs. |
-| **Dev container** | Python 3.12 + uv + the `ubc` CLI, plus the right VS Code extensions, preconfigured. |
+| **Dev container** | Pulls a prebuilt image (Python 3.12 + uv + Graphviz/PlantUML/Java), fetches the `ubc` CLI on create, and preloads the right VS Code extensions. |
 | **Sphinx-Needs 8.x** | Requirements/specs/tests as first-class, traceable objects. |
 | **Furo theme** | Clean, responsive HTML output. |
 | **HTML builder** | `make html` → browsable docs. |
@@ -35,8 +35,9 @@ Requires [Docker](https://www.docker.com/) and VS Code with the
 
 1. Open this folder in VS Code.
 2. **Reopen in Container** when prompted (or run *Dev Containers: Reopen in
-   Container*). The container builds Python 3.12, uv, and the `ubc` CLI, then
-   runs `uv sync` automatically.
+   Container*). The dev container **pulls** the prebuilt base image
+   (`ghcr.io/patdhlk/sphinx-needs-starter`), fetches the `ubc` CLI, then runs
+   `uv sync` automatically — no local image build.
 3. Build the docs:
 
    ```bash
@@ -139,6 +140,30 @@ Ready-made **VS Code tasks** are in `.vscode/tasks.json` (run them via
 > it). Graphviz, Mermaid, and Sphinx-Needs directives are recognized natively.
 
 ---
+
+## Maintaining
+
+### Publishing the base image
+
+The dev container pulls `ghcr.io/patdhlk/sphinx-needs-starter`, built from
+`.devcontainer/Dockerfile`. To rebuild and publish a new multi-arch version
+(maintainers only):
+
+```bash
+# One-time: grant the package scope and log in to GHCR
+gh auth refresh -h github.com -s write:packages
+gh auth token | docker login ghcr.io -u patdhlk --password-stdin
+
+# Build + push for both architectures
+docker buildx build --platform linux/amd64,linux/arm64 \
+  -t ghcr.io/patdhlk/sphinx-needs-starter:latest \
+  --push .devcontainer
+```
+
+The image deliberately excludes `ubc` (useblocks' proprietary binary); the
+container fetches it on create via `.devcontainer/install-ubc.sh`. Bump the
+pinned tool versions in `.devcontainer/Dockerfile` (uv) and `install-ubc.sh`
+(`UBC_VERSION`) as needed.
 
 ## License
 

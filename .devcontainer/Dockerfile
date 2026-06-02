@@ -1,4 +1,17 @@
+# Recipe for the published dev container base image:
+#   ghcr.io/patdhlk/sphinx-needs-starter
+#
+# This image is referenced by devcontainer.json ("image": ...). It is NOT built
+# on each customer's machine — they pull it. To rebuild and publish a new
+# version, see the "Publishing the base image" section in the README.
+#
+# Note: the ubc CLI is deliberately NOT baked in (it is useblocks' proprietary
+# binary). The dev container fetches it on create via install-ubc.sh.
 FROM mcr.microsoft.com/devcontainers/python:3.12-bookworm
+
+LABEL org.opencontainers.image.source="https://github.com/patdhlk/sphinx-needs-starter"
+LABEL org.opencontainers.image.description="Sphinx + Sphinx-Needs build toolchain (uv, Graphviz, PlantUML, Java) — dev container base image"
+LABEL org.opencontainers.image.licenses="MIT"
 
 # Diagram toolchain used during the Sphinx build:
 #   - graphviz provides `dot` (sphinx.ext.graphviz, and PlantUML's layout engine)
@@ -13,12 +26,3 @@ RUN apt-get update \
 # Bring in uv/uvx from Astral's first-party distroless image (no third-party
 # devcontainer Feature). Pinned for reproducibility.
 COPY --from=ghcr.io/astral-sh/uv:0.8.19 /uv /uvx /bin/
-
-# Version of the ubc CLI to install. Overridable at build time.
-ARG UBC_VERSION=0.29.3
-ENV UBC_VERSION=${UBC_VERSION}
-
-# Install the per-platform ubc binary. The base image already provides
-# git, make, curl, and the non-root `vscode` user.
-COPY install-ubc.sh /tmp/install-ubc.sh
-RUN chmod +x /tmp/install-ubc.sh && /tmp/install-ubc.sh "${UBC_VERSION}"
