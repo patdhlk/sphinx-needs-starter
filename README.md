@@ -146,15 +146,26 @@ Ready-made **VS Code tasks** are in `.vscode/tasks.json` (run them via
 ### Publishing the base image
 
 The dev container pulls `ghcr.io/patdhlk/sphinx-needs-starter`, built from
-`.devcontainer/Dockerfile`. To rebuild and publish a new multi-arch version
-(maintainers only):
+`.devcontainer/Dockerfile`.
+
+**Automated (preferred).** The
+[`Publish base image`](.github/workflows/publish-image.yml) GitHub Actions
+workflow builds and pushes the multi-arch image whenever you publish a
+**GitHub Release**. The release tag drives the image tags:
 
 ```bash
-# One-time: grant the package scope and log in to GHCR
+gh release create v0.1.1 --title v0.1.1 --notes "Bump toolchain"
+# -> pushes ghcr.io/patdhlk/sphinx-needs-starter:0.1.1, :0.1, and :latest
+```
+
+You can also run it manually from the **Actions** tab (pushes `:latest`). It
+uses the repo's `GITHUB_TOKEN`, so no PAT or login is required.
+
+**Manual fallback** (local multi-arch build):
+
+```bash
 gh auth refresh -h github.com -s write:packages
 gh auth token | docker login ghcr.io -u patdhlk --password-stdin
-
-# Build + push for both architectures
 docker buildx build --platform linux/amd64,linux/arm64 \
   -t ghcr.io/patdhlk/sphinx-needs-starter:latest \
   --push .devcontainer
@@ -163,7 +174,7 @@ docker buildx build --platform linux/amd64,linux/arm64 \
 The image deliberately excludes `ubc` (useblocks' proprietary binary); the
 container fetches it on create via `.devcontainer/install-ubc.sh`. Bump the
 pinned tool versions in `.devcontainer/Dockerfile` (uv) and `install-ubc.sh`
-(`UBC_VERSION`) as needed.
+(`UBC_VERSION`), then publish a new release.
 
 ## License
 
